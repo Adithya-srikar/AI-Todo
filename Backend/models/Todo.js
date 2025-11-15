@@ -1,0 +1,37 @@
+import mongoose from 'mongoose';
+
+const todoSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  description: {
+    type: String,
+    trim: true
+  },
+  timeEstimate: {
+    type: String,
+    trim: true
+  },
+  completed: {
+    type: Boolean,
+    default: false
+  },
+  goal: {
+    type: String,
+    trim: true
+  },
+  order: {
+    type: Number,
+    default: 0
+  }
+}, {
+  timestamps: true
+});
+
+const Todo = mongoose.model('Todo', todoSchema);
+
+export default Todo;
+
+
