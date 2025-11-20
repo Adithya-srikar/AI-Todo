@@ -1,5 +1,5 @@
 import connectDB from '../db.js';
-import Todo from '../Backend/models/Todo.js';
+import Todo from '../models/Todo.js';
 
 export default async function handler(req, res) {
   // Set CORS headers
@@ -25,7 +25,7 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'POST') {
-      const { title, description, timeEstimate, goal, order } = req.body;
+      const { title, description, timeEstimate, goal, order } = req.body || {};
 
       if (!title) {
         return res.status(400).json({ error: 'Title is required' });

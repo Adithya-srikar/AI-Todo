@@ -1,5 +1,5 @@
 import connectDB from '../db.js';
-import Todo from '../Backend/models/Todo.js';
+import Todo from '../models/Todo.js';
 
 export default async function handler(req, res) {
   // Set CORS headers
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     const { id } = req.query;
 
     if (req.method === 'PUT') {
-      const updates = req.body;
+      const updates = req.body || {};
 
       const todo = await Todo.findByIdAndUpdate(
         id,

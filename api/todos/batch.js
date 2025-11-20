@@ -1,5 +1,5 @@
 import connectDB from '../db.js';
-import Todo from '../Backend/models/Todo.js';
+import Todo from '../models/Todo.js';
 
 export default async function handler(req, res) {
   // Set CORS headers
@@ -23,7 +23,7 @@ export default async function handler(req, res) {
   try {
     await connectDB();
 
-    const { todos } = req.body;
+    const { todos } = req.body || {};
 
     if (!todos || !Array.isArray(todos)) {
       return res.status(400).json({ error: 'Todos array is required' });

@@ -1,5 +1,5 @@
 import connectDB from '../db.js';
-import geminiService from '../Backend/services/geminiService.js';
+import geminiService from '../services/geminiService.js';
 
 export default async function handler(req, res) {
   // Set CORS headers
@@ -21,10 +21,14 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { goal, answers } = req.body;
+    const { goal, answers } = req.body || {};
 
     if (!goal || !answers || !Array.isArray(answers)) {
       return res.status(400).json({ error: 'Goal and answers array are required' });
+    }
+
+    if (!process.env.GEMINI_API_KEY) {
+      return res.status(500).json({ error: 'GEMINI_API_KEY environment variable is not set' });
     }
 
     // Connect to database
@@ -40,7 +44,11 @@ export default async function handler(req, res) {
     return res.status(200).json({ plan });
   } catch (error) {
     console.error('Error in /api/ai/generate-plan:', error);
-    return res.status(500).json({ error: 'Failed to generate plan' });
+    return res.status(500).json({ 
+      error: 'Failed to generate plan',
+      message: error.message || 'Unknown error',
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 }
 
